@@ -67,19 +67,22 @@
 static BOOL textFieldState = YES;
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    if (NO == textFieldState)
-    {
+    
+    UITouch *touch = touches.allObjects.lastObject;
+    if (NO == textFieldState) {
         [UIView animateWithDuration:0.5 animations:^{
             [self becomeFirstResponder];
             textFieldState = YES;
         }];
-    }
-    else
-    {
-        [UIView animateWithDuration:0.5 animations:^{
-            [self resignFirstResponder];
-            textFieldState = NO;
-        }];
+    } else {   // 点击到键盘的 view 上不响应事件
+        if ([touch.view isKindOfClass:[YQLKeyboardView class]]) {
+            
+        } else {
+            [UIView animateWithDuration:0.5 animations:^{
+                [self resignFirstResponder];
+                textFieldState = NO;
+            }];
+        }
     }
 }
 
